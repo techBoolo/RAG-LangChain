@@ -8,6 +8,7 @@ load_dotenv()
 # LangChain automatically communicates with your running Ollama instance.
 llm = ChatOllama(model="llama3")
 
+# template = "Tell me {number} jokes about {topic}."
 message = [
     ("system", "You are a comedian who tells jokes about {topic}."),  
     HumanMessage(content="Tell me 3 joks")
