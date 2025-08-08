@@ -9,3 +9,4 @@ repomix-output.xml
 # Virtual environments
 .venv
 .env
+*.db
