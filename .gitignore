@@ -10,3 +10,5 @@ repomix-output.xml
 .venv
 .env
 *.db
+4_rag/docs/
+4/ragdb/

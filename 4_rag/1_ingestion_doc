@@ -1,0 +1,45 @@
+  Phase 1: Setup and Dependencies
+
+  First, we need to ensure we have all the necessary Python packages.
+
+   1. Required Packages:
+       * langchain: The core library for building our components.
+       * pypdf: The recommended library for loading and parsing PDF documents.
+       * langchain_community: This package contains many of the third-party integrations, including document loaders and
+         vector stores.
+       * faiss-cpu: This is the vector store we will use. It's a powerful and efficient library from Facebook AI for
+         similarity search. We'll use the CPU version as it requires no special hardware.
+       * langchain-ollama: To get the embeddings from our local llama3 model.
+
+   2. Installation Command:
+      provide the command to install all these dependencies at once.
+
+  Phase 2: The Ingestion Pipeline
+  
+  logical steps.
+
+   1. Step 1: Load the Document
+       * We'll use the PyPDFLoader from langchain_community.document_loaders to read a PDF file.
+       * For this example, I'll assume we have a sample PDF file named vscode-mac.pdf in the same directory but inside docs folder.
+
+   2. Step 2: Split the Document into Chunks
+       * A whole document is too large to fit into the context of a language model. We need to break it into smaller,
+         manageable pieces, or "chunks."
+       * We'll use the RecursiveCharacterTextSplitter for this. It's a robust splitter that tries to break text at logical
+         points (like newlines and sentences) to keep related content together.
+
+   3. Step 3: Create Embeddings
+       * This is the core of turning text into a format the computer can understand for similarity searching.
+       * We will use OllamaEmbeddings to connect to your local Llama 3 model and generate a numerical vector (an
+         embedding) for each text chunk. Each vector represents the semantic meaning of the chunk.
+
+   4. Step 4: Store Chunks in a Vector Store
+       * Once we have the embeddings, we need to store them in a specialized database that can perform rapid similarity
+         searches.
+       * We will use FAISS (Facebook AI Similarity Search) for this. The script will take all the text chunks and their
+         corresponding embeddings and load them into a FAISS index.
+       * This index will then be saved to a local file (e.g., faiss_index) so it can be loaded and used later for querying
+         without having to re-process the PDF every time.
+
+  This plan will give you a complete, runnable script that prepares your document and stores it in a vector database,
+  setting the stage for the "retrieval" part of RAG.
