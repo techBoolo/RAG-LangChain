@@ -52,3 +52,14 @@ ANSWER:
 
 prompt = ChatPromptTemplate.from_template(template)
 print("RAG prompt template created.")
+
+# 4. build the RAG chain
+llm = ChatOllama(model=LLM_MODEL)
+
+rag_chain = (
+    {"context": retriever, "question": RunnablePassthrough()}
+    | prompt
+    | llm
+    | StrOutputParser()
+)
+print("RAG chain built successfully.")
