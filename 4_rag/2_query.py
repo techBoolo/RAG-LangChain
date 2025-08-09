@@ -63,3 +63,23 @@ rag_chain = (
     | StrOutputParser()
 )
 print("RAG chain built successfully.")
+
+# 5. Invoke the chain
+print("\nReady to answer your questions! Type 'exit' to quit.")
+while True:
+    try:
+        user_question = input("\nUser question: ")
+        if user_question.lower() == 'exit':
+            print("Exiting...")
+            break
+        
+        print("Assistant is thinking...")
+        response = rag_chain.invoke(user_question)
+        print(f"\nAssistant: {response}")
+
+    except KeyboardInterrupt:
+        print("\nExiting...")
+        break
+    except Exception as e:
+        print(f"\nAn error occurred: {e}")
+        break
