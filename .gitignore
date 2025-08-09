@@ -11,4 +11,4 @@ repomix-output.xml
 .env
 *.db
 4_rag/docs/
-4/ragdb/
+4_rag/db/
