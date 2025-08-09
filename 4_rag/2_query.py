@@ -35,3 +35,20 @@ except Exception as e:
 retriever = vector_store.as_retriever()
 print("Retriever created successfully.")
 
+# 3. RAG prompt template
+template = """
+You are an expert assistant for answering questions.
+You must answer the question based only on the provided context.
+If you don't know the answer from the context, just say that you don't know. Do not make up an answer.
+
+CONTEXT:
+{context}
+
+QUESTION:
+{question}
+
+ANSWER:
+"""
+
+prompt = ChatPromptTemplate.from_template(template)
+print("RAG prompt template created.")
