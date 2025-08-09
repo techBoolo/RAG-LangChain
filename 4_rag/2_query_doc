@@ -1,0 +1,39 @@
+  Plan for Querying the Vector Store
+
+   1. Step 1: Load the Existing Vector Store
+       * The first action is to load the faiss_index that we saved to disk in the previous step.
+       * To do this, we need the same embeddings model (OllamaEmbeddings with nomic-embed-text) that was used to create the vectors
+         in the first place. The vector store needs it to understand how to interpret the user's query vector.
+       * We will use the FAISS.load_local() method for this.
+
+   2. Step 2: Create a "Retriever"
+       * Once the vector store is loaded, we will convert it into a "retriever" object.
+       * A retriever is a standard LangChain interface that has one primary job: given a text query, it returns a list of
+         the most relevant documents (our PDF chunks) from the vector store.
+       * This is done simply by calling the .as_retriever() method on the loaded FAISS object.
+
+   3. Step 3: Define a RAG Prompt Template
+       * This is the most critical part of the RAG process. We need to create a specialized prompt that instructs the
+         language model on how to behave.
+       * We will use a ChatPromptTemplate that accepts two variables:
+           * {context}: This is where we will insert the relevant document chunks fetched by our retriever.
+           * {question}: This is the original question from the user.
+       * The prompt's instructions will be very specific, telling the AI: "You must answer the question using only the 
+         provided context. If the answer is not in the context, say you don't know." This prevents the model from making
+         up answers and forces it to rely on the document.
+
+   4. Step 4: Build the RAG Chain
+       * Using the LangChain Expression Language (LCEL), we will pipe all the components together into a single, elegant
+         chain. The data will flow as follows:
+           1. The chain will take the user's question as input.
+           2. The retriever will be called with the question to fetch the relevant context.
+           3. Both the context and the original question will be passed to the prompt_template.
+           4. The formatted prompt will be sent to the llm (ChatOllama).
+           5. Finally, an StrOutputParser will clean up the model's output, giving us a simple string answer.
+
+   5. Step 5: Invoke the Chain
+       * To finish, I will write the code to ask a sample question related to the PDF content (e.g., "How do I set up VS
+         Code on a Mac?") and print the AI-generated answer, which will be based solely on the document you provided.
+
+  This plan will result in a complete, functional RAG script that can intelligently answer questions using your document
+  as its knowledge base.
