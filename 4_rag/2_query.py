@@ -31,3 +31,7 @@ except Exception as e:
     print(f"An error occurred while loading the vector store: {e}")
     sys.exit(1)
 
+# 2. Create a retriever for the vector store
+retriever = vector_store.as_retriever()
+print("Retriever created successfully.")
+
